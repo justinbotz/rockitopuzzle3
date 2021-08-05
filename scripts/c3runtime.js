@@ -2454,6 +2454,16 @@ true;const result=await this._runtime.PostComponentMessageToDOMAsync("runtime","
 
 
 self["C3_Shaders"] = {};
+self["C3_Shaders"]["stretch"] = {
+	src: "#ifdef GL_FRAGMENT_PRECISION_HIGH\n#define highmedp highp\n#else\n#define highmedp mediump\n#endif\nvarying mediump vec2 vTex;\nuniform lowp sampler2D samplerFront;\nuniform mediump vec2 srcOriginStart;\nuniform mediump vec2 srcOriginEnd;\nvoid main(void)\n{\nhighmedp vec2 center = vec2(0.5, 0.5);\nhighmedp vec2 tex = (vTex - srcOriginStart) / (srcOriginEnd - srcOriginStart);\nhighmedp vec2 normCoord = 2.0 * tex - 1.0;\nhighmedp vec2 normCenter = 2.0 * center - 1.0;\nnormCoord -= normCenter;\nmediump vec2 s = sign(normCoord);\nnormCoord = abs(normCoord);\nnormCoord = 0.5 * normCoord + 0.5 * smoothstep(0.25, 0.5, normCoord) * normCoord;\nnormCoord = s * normCoord;\nnormCoord += normCenter;\nnormCoord = normCoord / 2.0 + 0.5;\nnormCoord = clamp(normCoord, 0.0, 1.0);\ngl_FragColor = texture2D(samplerFront, mix(srcOriginStart, srcOriginEnd, normCoord));\n}",
+	extendBoxHorizontal: 0,
+	extendBoxVertical: 0,
+	crossSampling: false,
+	mustPreDraw: false,
+	preservesOpaqueness: true,
+	animated: false,
+	parameters: []
+};
 
 
 'use strict';{const C3=self.C3;let cacheRegex=null;let lastRegex="";let lastFlags="";let regexMatches=[];let lastMatchesStr="";let lastMatchesRegex="";let lastMatchesFlags="";const forEachStack=C3.New(C3.ArrayStack);function ForEachOrdered_SortInstances(a,b){const va=a[1];const vb=b[1];if(typeof va==="number"&&typeof vb==="number")return va-vb;else{const sa=""+va;const sb=""+vb;if(sa<sb)return-1;else if(sa>sb)return 1;else return 0}}C3.Plugins.System=class SystemPlugin extends C3.SDKPluginBase{constructor(opts){super(opts);
@@ -3184,6 +3194,7 @@ value:this._waitTime,onedit:v=>this._waitTime=v},{name:prefix+".properties.fade-
 		{Tutorial: 0},
 		{Sprite: 0},
 		{puzzle: 0},
+		{Sprite2: 0},
 		{PiecesPerLine: 0},
 		{PiecesWidth: 0},
 		{PiecesHeight: 0},
